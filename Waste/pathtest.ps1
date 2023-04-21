@@ -1,0 +1,3 @@
+$parentPath = get-location
+$parentPath
+

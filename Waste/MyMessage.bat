@@ -1,0 +1,1 @@
+mshta javascript:alert("Message");close();

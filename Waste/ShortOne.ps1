@@ -1,0 +1,1 @@
+scp -P 21 C:/PrintAndDriverFrameLog/file.txt onepay@192.168.0.77:/Home/Test/
