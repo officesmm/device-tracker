@@ -1,14 +1,11 @@
-$Items = @('Archived History',
-'Cache\*',
-'Cookies',
-'History',
-'Login Data',
-'Top Sites',
-'Visited Links',
-'Web Data')
-$Folder = "$($env:LOCALAPPDATA)\Google\Chrome\User Data\Default"
-$Items | % {
-    if (Test-Path "$Folder\$_") {
-        Remove-Item "$Folder\$_"
-    }
-}
+#$DataSource = "C:\Users\SoeMyatMin\AppData\Local\Google\Chrome\User Data\Default\HistoryTemp.sqlite"
+#Copy-Item "C:\Users\SoeMyatMin\AppData\Local\Google\Chrome\User Data\Default\History" $DataSource
+#if (Test-Path $DataSource) {
+#    Remove-Item $DataSource
+#}
+
+$UserName = $env:UserName
+$DataDestinationPath = "C:\Users\"+$UserName+"\AppData\Local\Google\Chrome\User Data\Default\HistoryTemp.sqlite"
+$DataSourcePath = "C:\Users\"+$UserName+"\AppData\Local\Google\Chrome\User Data\Default\History"
+Copy-Item $DataSourcePath $DataDestinationPath
+ #>

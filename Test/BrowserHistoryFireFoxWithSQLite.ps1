@@ -1,4 +1,5 @@
 $UserName = $env:UserName
+$YesterdayDateFilterName = (Get-Date).AddDays(-1).ToString('yyyy-MM-dd')
 
 #DOWNLOAD SQLITE
 if (-not(Test-Path -Path C:\sqlite.zip -PathType Leaf))
@@ -24,8 +25,7 @@ try
         $tables = C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe $DataSource .tables
         if ($tables -match "moz")
         {
-#            SELECT url from moz_places
-            $SQLiteArray = C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe $DataSource "SELECT url, last_visit_date from moz_places"
+            $SQLiteArray = C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe $DataSource "SELECT url, datetime(last_visit_date / 1000000 + (strftime('%s', '1970-01-01')), 'unixepoch', 'localtime') from moz_places"
         }
     }
 }
@@ -35,14 +35,17 @@ catch
 }
 
 $AllHistory = @()
-For ($i=0; $i -lt $SQLiteArray.Length; $i++) {
-    $HistoryData = New-Object -TypeName PSObject -Property @{
-        User = $UserName
-        Browser = 'Firefox'
-        DataType = 'History'
-        Data = $SQLiteArray[$i]
+For ($i = 0; $i -lt $SQLiteArray.Length; $i++) {
+    if($YesterdayDateFilterName -eq $SQLiteArray[$i].split("|")[1].SubString(0,10)){
+        $HistoryData = New-Object -TypeName PSObject -Property @{
+            User = $UserName
+            Browser = 'FireFox'
+            DataType = 'History'
+            Data = $SQLiteArray[$i].split("|")[0]
+            TimeStamp = $SQLiteArray[$i].split("|")[1]
+        }
+        $AllHistory += $HistoryData
     }
-    $AllHistory += $HistoryData
 }
 $AllHistory
-#$AllHistory | Export-Csv -Path C:\temp\FirefoxHistory.csv
+$AllHistory | Export-Csv -Path C:\temp\NewFirefoxHistory.csv

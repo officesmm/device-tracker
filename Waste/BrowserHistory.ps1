@@ -7,7 +7,7 @@ if (-not(Test-Path -Path $Path))
     Write-Verbose "[!] Could not find Chrome History for username: $UserName"
 }
 else{
-    $Regex = '(htt(p|s))://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)*?'
+    $Regex = '(http|https)://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)*?'
     $Value = Get-Content -Path "$Env:systemdrive\Users\$UserName\AppData\Local\Google\Chrome\User Data\Default\History"|Select-String -AllMatches $regex |% { ($_.Matches).Value } |Sort -Unique
 
     $Value | ForEach-Object {
