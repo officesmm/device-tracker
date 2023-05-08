@@ -1,15 +1,16 @@
 $UserName = $env:UserName
-$pcname= whoami
+$pcname = whoami
 $ComputerName = $pcname.Split("\")
 $YesterdayDateFileName = (Get-Date).AddDays(-1).ToString('yyyyMMdd')
 $YesterdayDateFilterName = (Get-Date).AddDays(-1).ToString('yyyy-MM-dd')
 $AllHistory = @()
 
-$NewItemPath = "C:\SecurityLog\"+$YesterdayDateFileName
-if (-Not (Test-Path -Path $NewItemPath)){
+$NewItemPath = "C:\SecurityLog\" + $YesterdayDateFileName
+if (-Not(Test-Path -Path $NewItemPath))
+{
     New-Item -Path $NewItemPath -ItemType Directory
 }
-$BrowserHistoryFilePath = $NewItemPath + "\BrowserHistory"+$YesterdayDateFileName+$ComputerName[0]+".csv"
+$BrowserHistoryFilePath = $NewItemPath + "\BrowserHistory" + $YesterdayDateFileName + $ComputerName[0] + ".csv"
 
 #DOWNLOAD SQLITE
 if (-not(Test-Path -Path C:\sqlite.zip -PathType Leaf))
@@ -27,8 +28,8 @@ if (-not(Test-Path -Path "C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe"
 #Chrome Start here
 try
 {
-    $DataDestinationPath = "C:\Users\"+$UserName+"\AppData\Local\Google\Chrome\User Data\Default\HistoryTemp.sqlite"
-    $DataSourcePath = "C:\Users\"+$UserName+"\AppData\Local\Google\Chrome\User Data\Default\History"
+    $DataDestinationPath = "C:\Users\" + $UserName + "\AppData\Local\Google\Chrome\User Data\Default\HistoryTemp.sqlite"
+    $DataSourcePath = "C:\Users\" + $UserName + "\AppData\Local\Google\Chrome\User Data\Default\History"
     Copy-Item $DataSourcePath $DataDestinationPath
     $tables = C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe $DataDestinationPath .tables
     if ($tables -match "urls")
@@ -45,15 +46,23 @@ catch
     write-host $_.Exception.Message
 }
 For ($i = 0; $i -lt $SQLiteArrayChrome.Length; $i++) {
-    if($YesterdayDateFilterName -eq $SQLiteArrayChrome[$i].split("|")[1].SubString(0,10)){
-        $HistoryData = New-Object -TypeName PSObject -Property @{
-            User = $UserName
-            Browser = 'Chrome'
-            DataType = 'History'
-            Data = $SQLiteArrayChrome[$i].split("|")[0]
-            TimeStamp = $SQLiteArrayChrome[$i].split("|")[1]
+    try
+    {
+        if ($YesterdayDateFilterName -eq $SQLiteArrayChrome[$i].split("|")[1].SubString(0, 10))
+        {
+            $HistoryData = New-Object -TypeName PSObject -Property @{
+                User = $UserName
+                Browser = 'Chrome'
+                DataType = 'History'
+                Data = $SQLiteArrayChrome[$i].split("|")[0]
+                TimeStamp = $SQLiteArrayChrome[$i].split("|")[1]
+            }
+            $AllHistory += $HistoryData
         }
-        $AllHistory += $HistoryData
+    }
+    catch
+    {
+        Write-Host "Index and length error";
     }
 }
 #Chrome End here
@@ -79,24 +88,33 @@ catch
     write-host $_.Exception.Message
 }
 For ($i = 0; $i -lt $SQLiteArrayFirefox.Length; $i++) {
-    if($YesterdayDateFilterName -eq $SQLiteArrayFirefox[$i].split("|")[1].SubString(0,10)){
-        $HistoryData = New-Object -TypeName PSObject -Property @{
-            User = $UserName
-            Browser = 'FireFox'
-            DataType = 'History'
-            Data = $SQLiteArrayFirefox[$i].split("|")[0]
-            TimeStamp = $SQLiteArrayFirefox[$i].split("|")[1]
+    try
+    {
+        if ($YesterdayDateFilterName -eq $SQLiteArrayFirefox[$i].split("|")[1].SubString(0, 10))
+        {
+            $HistoryData = New-Object -TypeName PSObject -Property @{
+                User = $UserName
+                Browser = 'FireFox'
+                DataType = 'History'
+                Data = $SQLiteArrayFirefox[$i].split("|")[0]
+                TimeStamp = $SQLiteArrayFirefox[$i].split("|")[1]
+            }
+            $AllHistory += $HistoryData
         }
-        $AllHistory += $HistoryData
     }
+    catch
+    {
+        Write-Host "Index and length error";
+    }
+
 }
 #Firefox End here
 
 #Edge Start here
 try
 {
-    $DataDestinationPath = "C:\Users\"+$UserName+"\AppData\Local\Microsoft\Edge\User Data\Default\HistoryTemp.sqlite"
-    $DataSourcePath = "C:\Users\"+$UserName+"\AppData\Local\Microsoft\Edge\User Data\Default\History"
+    $DataDestinationPath = "C:\Users\" + $UserName + "\AppData\Local\Microsoft\Edge\User Data\Default\HistoryTemp.sqlite"
+    $DataSourcePath = "C:\Users\" + $UserName + "\AppData\Local\Microsoft\Edge\User Data\Default\History"
     Copy-Item $DataSourcePath $DataDestinationPath
     $tables = C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe $DataDestinationPath .tables
     if ($tables -match "urls")
@@ -113,15 +131,23 @@ catch
     write-host $_.Exception.Message
 }
 For ($i = 0; $i -lt $SQLiteArrayEdge.Length; $i++) {
-    if($YesterdayDateFilterName -eq $SQLiteArrayEdge[$i].split("|")[1].SubString(0,10)){
-        $HistoryData = New-Object -TypeName PSObject -Property @{
-            User = $UserName
-            Browser = 'Edge'
-            DataType = 'History'
-            Data = $SQLiteArrayEdge[$i].split("|")[0]
-            TimeStamp = $SQLiteArrayEdge[$i].split("|")[1]
+    try
+    {
+        if ($YesterdayDateFilterName -eq $SQLiteArrayEdge[$i].split("|")[1].SubString(0, 10))
+        {
+            $HistoryData = New-Object -TypeName PSObject -Property @{
+                User = $UserName
+                Browser = 'Edge'
+                DataType = 'History'
+                Data = $SQLiteArrayEdge[$i].split("|")[0]
+                TimeStamp = $SQLiteArrayEdge[$i].split("|")[1]
+            }
+            $AllHistory += $HistoryData
         }
-        $AllHistory += $HistoryData
+    }
+    catch
+    {
+        Write-Host "Index and length error";
     }
 }
 #Edge End here

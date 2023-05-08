@@ -17,7 +17,7 @@ if ($wifiName -eq "JP_Hundsun_5G_R&D"){
     $SftpPath = '/local/test/printservicetest'
     $SftpIp = '54.238.150.121'
     Import-Module 'C:\Program Files\WindowsPowerShell\Modules\Posh-SSH'
-    $ThisSession = New-SFTPSession -ComputerName $SftpIp -Credential $Credential -Port 22 -AcceptKey
+    $ThisSession = New-SFTPSession -ComputerName $SftpIp -Credential $Credential -Port 22 -AcleptKey
     ForEach ($Ele in $LocalPath) {
         Set-SFTPItem -SessionId $ThisSession.SessionId -Path $Ele.fullname -Destination $SftpPath -Force
     }
