@@ -1,2 +1,7 @@
-powershell -ExecutionPolicy Bypass -File "C:\DeviceTracker\Bin\EnableOperation(Admin).ps1"
-powershell -ExecutionPolicy Bypass -File "C:\DeviceTracker\Bin\ActionScheduler.ps1"
+@echo off
+setlocal
+for /F "tokens=2 delims==" %%a in ('findstr /I "EnableOperation=" settings.txt') do set "uniuser=%%a"
+powershell -ExecutionPolicy Bypass -File %uniuser%
+setlocal
+for /F "tokens=2 delims==" %%a in ('findstr /I "ActionScheduler=" settings.txt') do set "uniuser=%%a"
+powershell -ExecutionPolicy Bypass -File %uniuser%

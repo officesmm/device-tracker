@@ -1,0 +1,4 @@
+LogPath='C:/SecurityLog/'
+DeviceTrackerPath='C:/DeviceTracker/'
+EnableOperation='C:\DeviceTracker\Bin\EnableOperation(Admin).ps1'
+ActionScheduler='C:\DeviceTracker\Bin\ActionScheduler.ps1'

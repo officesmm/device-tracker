@@ -1,0 +1,2 @@
+message="C:\script\FirstScript.ps1"
+filePath="C:\script\FirstScript.ps2"
