@@ -1,22 +1,5 @@
-#Get-AppxPackage -name Facebook.InstagramBeta
-$Software = @()
-$Code = @()
-Import-Csv C:\DeviceTracker\SoftwareList.csv -delimiter "," |`
-    ForEach-Object {
-    $Software += $_."Software"
-    $Code += $_."Code"
+#Get-AppxPackage
+Get-Content C:\DeviceTracker\settings.txt | Foreach-Object{
+    $var = $_.Split('=')
+    New-Variable -Name $var[0] -Value $var[1]
 }
-$SoftwareList = @()
-for ($i = 0; $i -lt $Software.Count; $i++) {
-    $SoftwareList += [pscustomobject]@{Name=$Software[$i];Code=$Code[$i]}
-}
-$SoftwareList
-#$SoftwareList = @(
-#[pscustomobject]@{Name='Facebook';Code='FACEBOOK.FACEBOOK'}
-#[pscustomobject]@{Name='Line'; Code='NAVER.LINEwin8'}
-#[pscustomobject]@{Name='TikTok'; Code='BytedancePte.Ltd.TikTok'}
-#[pscustomobject]@{Name='Instagram'; Code='Facebook.InstagramBeta'}
-#)
-#
-#$Software
-#$Code

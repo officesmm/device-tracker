@@ -1,7 +1,12 @@
+Get-Content C:\DeviceTracker\settings.txt | Foreach-Object{
+    $var = $_.Split('=')
+    New-Variable -Name $var[0] -Value $var[1]
+}
+
 $wifiName = (get-netconnectionProfile).Name
 if ($wifiName -eq "JP_Hundsun_5G_R&D"){
     Write-Output "connecting local server"
-    $source = "C:\SecurityLog"
+    $source = $LogPath
     $destination = "ftp://onepay:onepay001@192.168.0.77:21//Public"
     $webclient = New-Object -TypeName System.Net.WebClient
     $files = Get-ChildItem $source
@@ -13,7 +18,7 @@ if ($wifiName -eq "JP_Hundsun_5G_R&D"){
     Write-Output "connecting public wifi"
     $Password = ConvertTo-SecureString 'EwWmtL5N6xtPYgnF' -AsPlainText -Force
     $Credential = New-Object System.Management.Automation.PSCredential ('OA010832', $Password)
-    $LocalPath = get-childitem "C:\SecurityLog\"
+    $LocalPath = get-childitem $LogPath
     $SftpPath = '/local/test/printservicetest'
     $SftpIp = '54.238.150.121'
     Import-Module 'C:\Program Files\WindowsPowerShell\Modules\Posh-SSH'

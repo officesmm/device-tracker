@@ -1,3 +1,5 @@
+Install-Module -Name Posh-SSH
+
 $pcname= whoami
 $CharArray = $pcname.Split("\")
 

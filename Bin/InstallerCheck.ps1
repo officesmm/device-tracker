@@ -13,7 +13,13 @@ for ($i = 0; $i -lt $Software.Count; $i++) {
 $pcname = whoami
 $ComputerName = $pcname.Split("\")
 $YesterdayDateFileName = (Get-Date).AddDays(-1).ToString('yyyyMMdd')
-$NewItemPath = "C:\SecurityLog\" + $YesterdayDateFileName
+
+Get-Content C:\DeviceTracker\settings.txt | Foreach-Object{
+    $var = $_.Split('=')
+    New-Variable -Name $var[0] -Value $var[1]
+}
+
+$NewItemPath = $LogPath + $YesterdayDateFileName
 if (-Not(Test-Path -Path $NewItemPath)){
     New-Item -Path $NewItemPath -ItemType Directory
 }
