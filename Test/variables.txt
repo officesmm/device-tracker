@@ -1,0 +1,6 @@
+﻿variable2=value2
+variable3=info
+testvar=20230515
+BrowserLastRun=20230515
+DeviceLastRun=20230515
+InstallerLastRun=20230515
