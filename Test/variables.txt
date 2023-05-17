@@ -4,3 +4,4 @@ testvar=20230515
 BrowserLastRun=20230515
 DeviceLastRun=20230515
 InstallerLastRun=20230515
+InstallerHistory=20230515

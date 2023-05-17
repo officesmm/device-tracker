@@ -1,11 +1,16 @@
-$file = 'C:\DeviceTracker\Test\variables.txt'
+
+
+$file = Join-Path $PSScriptRoot 'variables.txt'
 
 $YesterdayDateFileName = (Get-Date).AddDays(-1).ToString('yyyyMMdd')
 $VariableList = Get-Content -Raw $file | ConvertFrom-StringData
-$TestVar = $VariableList.testvar
+$HistoryVar = $VariableList.InstallerHistory
 
-if($TestVar -match "^[\d\.]+$"){
-    $dateGap = $YesterdayDateFileName - $TestVar
+if($HistoryVar -match "^[\d\.]+$"){
+    $Today = Get-Date
+    $PreviousDate = [datetime]::ParseExact($HistoryVar, 'yyyyMMdd', $null)
+    $Gap = $Today - $PreviousDate
+    $dateGap = $Gap.Days - 1
     if($dateGap -gt 7){
         $dateGap = 7
     }
@@ -20,8 +25,8 @@ while ($dateGap -ge 1){
 }
 
 (Get-Content $file -Encoding utf8) | ForEach-Object {
-    if ($_ -match "^testvar=") {
-        "testvar=$YesterdayDateFileName"
+    if ($_ -match "^InstallerHistory=") {
+        "InstallerHistory=$YesterdayDateFileName"
     } else {
         $_
     }

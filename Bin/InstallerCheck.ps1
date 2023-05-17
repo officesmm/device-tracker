@@ -18,7 +18,6 @@ function InstallerCheck($GapDate){
     $scriptPathLocal = $PSScriptRoot
     $parentPathLocal = Split-Path -Parent -Path $scriptPathLocal
     $thePath = Join-Path $parentPathLocal 'settings.txt'
-    $thePath
 
     (Get-Content $thePath) | Foreach-Object{
         $var = $_.Split('=')
@@ -62,15 +61,17 @@ function InstallerCheck($GapDate){
     $AllHistory | Export-Csv -Encoding UTF8 -Path $SoftwareInstalledHistoryFilePath
 }
 
-$scriptPath = $PSScriptRoot
-$file = Join-Path $scriptPath 'lastrun.txt'
+$file = Join-Path $PSScriptRoot 'lastrun.txt'
 
 $YesterdayDateFileName = (Get-Date).AddDays(-1).ToString('yyyyMMdd')
 $VariableList = Get-Content -Raw $file | ConvertFrom-StringData
 $HistoryVar = $VariableList.InstallerHistory
 
 if($HistoryVar -match "^[\d\.]+$"){
-    $dateGap = $YesterdayDateFileName - $HistoryVar
+    $Today = Get-Date
+    $PreviousDate = [datetime]::ParseExact($HistoryVar, 'yyyyMMdd', $null)
+    $Gap = $Today - $PreviousDate
+    $dateGap = $Gap.Days - 1
     if($dateGap -gt 7){
         $dateGap = 7
     }
