@@ -1,5 +1,3 @@
-
-
 $file = Join-Path $PSScriptRoot 'variables.txt'
 
 $YesterdayDateFileName = (Get-Date).AddDays(-1).ToString('yyyyMMdd')

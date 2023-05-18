@@ -1,3 +1,3 @@
 ﻿BrowserHistory=null
 DeviceHistory=null
-InstallerHistory=20230515
+InstallerHistory=20230516
