@@ -5,7 +5,11 @@ $YesterdayDateFileName = (Get-Date).AddDays(-1).ToString('yyyyMMdd')
 $YesterdayDateFilterName = (Get-Date).AddDays(-1).ToString('yyyy-MM-dd')
 $AllHistory = @()
 
-Get-Content C:\DeviceTracker\settings.txt | Foreach-Object{
+$scriptPathLocal = $PSScriptRoot
+$parentPathLocal = Split-Path -Parent -Path $scriptPathLocal
+$thePath = Join-Path $parentPathLocal 'settings.txt'
+
+Get-Content $thePath | Foreach-Object{
     $var = $_.Split('=')
     New-Variable -Name $var[0] -Value $var[1]
 }
@@ -17,6 +21,12 @@ if (-Not(Test-Path -Path $NewItemPath))
 }
 $BrowserHistoryFilePath = $NewItemPath + "\BrowserHistory" + $YesterdayDateFileName + $ComputerName[0] + ".csv"
 
+#Copy Database Sqlite to under C
+if (-not(Test-Path -Path C:\sqlite.zip -PathType Leaf))
+{
+    $theDatabasePath = Join-Path $parentPathLocal 'Database/sqlite.zip'
+    Copy-Item -Path $theDatabasePath -Destination 'C:\'
+}
 #DOWNLOAD SQLITE
 if (-not(Test-Path -Path C:\sqlite.zip -PathType Leaf))
 {
