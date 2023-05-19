@@ -1,7 +1,8 @@
 $trigger = New-ScheduledTaskTrigger -Daily -At 12:00
 
 $scriptPathLocal = $PSScriptRoot
-$TheTaskRunnerPath = Join-Path $scriptPathLocal 'EveryDaysTaskRunner.bat'
+$parentPathLocal = Split-Path -Parent -Path $scriptPathLocal
+$TheTaskRunnerPath = Join-Path $parentPathLocal 'EveryDaysTaskRunner.bat'
 
 $nextFilePath = $TheTaskRunnerPath
 $action = New-ScheduledTaskAction -Execute $nextFilePath

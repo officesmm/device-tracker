@@ -1,4 +1,3 @@
-variable=a
 LogPath=C:\SecurityLog\
 EnableOperation=C:\DeviceTracker\Bin\EnableOperation(Admin).ps1
 ActionScheduler=C:\DeviceTracker\Bin\ActionScheduler.ps1
