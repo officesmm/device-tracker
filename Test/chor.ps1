@@ -8,4 +8,3 @@ $UserName = $env:UserName
 $DataDestinationPath = "C:\Users\"+$UserName+"\AppData\Local\Google\Chrome\User Data\Default\HistoryTemp.sqlite"
 $DataSourcePath = "C:\Users\"+$UserName+"\AppData\Local\Google\Chrome\User Data\Default\History"
 Copy-Item $DataSourcePath $DataDestinationPath
- #>

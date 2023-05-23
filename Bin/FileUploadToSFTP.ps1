@@ -13,16 +13,16 @@ if ($ContainsPrefix)
 {
     Write-Output "connecting local server"
     $wifiName
-#    $Password = ConvertTo-SecureString 'onepay001' -AsPlainText -Force
-#    $Credential = New-Object System.Management.Automation.PSCredential ('onepay', $Password)
-#    $LocalPath = get-childitem $LogPath
-#    $SftpPath = '/Public/test/securitylog'
-#    $SftpIp = '192.168.0.77'
-#    Import-Module 'C:\Program Files\WindowsPowerShell\Modules\Posh-SSH'
-#    $ThisSession = New-SFTPSession -ComputerName $SftpIp -Credential $Credential -Port 2836 -AcceptKey
-#    ForEach ($Ele in $LocalPath) {
-#        Set-SFTPItem -SessionId $ThisSession.SessionId -Path $Ele.fullname -Destination $SftpPath -Force
-#    }
+    $Password = ConvertTo-SecureString 'onepay001' -AsPlainText -Force
+    $Credential = New-Object System.Management.Automation.PSCredential ('onepay', $Password)
+    $LocalPath = get-childitem $LogPath
+    $SftpPath = '/Public/test/securitylog'
+    $SftpIp = '192.168.0.77'
+    Import-Module 'C:\Program Files\WindowsPowerShell\Modules\Posh-SSH'
+    $ThisSession = New-SFTPSession -ComputerName $SftpIp -Credential $Credential -Port 2836 -AcceptKey
+    ForEach ($Ele in $LocalPath) {
+        Set-SFTPItem -SessionId $ThisSession.SessionId -Path $Ele.fullname -Destination $SftpPath -Force
+    }
 }
 else
 {
