@@ -2,7 +2,12 @@ function InstallerCheck($GapDate){
     $YesterdayDateFileName = (Get-Date).AddDays($GapDate).ToString('yyyyMMdd')
     $Software = @()
     $Code = @()
-    Import-Csv C:\DeviceTracker\SoftwareList.csv -delimiter "," |`
+
+    $scriptPathLocalCsvLink = $PSScriptRoot
+    $parentPathLocalCsvLink = Split-Path -Parent -Path $scriptPathLocalCsvLink
+    $theCSVPath = Join-Path $parentPathLocalCsvLink 'SoftwareList.csv'
+
+    Import-Csv $theCSVPath -delimiter "," |`
     ForEach-Object {
         $Software += $_."Software"
         $Code += $_."Code"
