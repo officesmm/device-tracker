@@ -16,7 +16,7 @@ if ($ContainsPrefix)
     $Password = ConvertTo-SecureString 'onepay001' -AsPlainText -Force
     $Credential = New-Object System.Management.Automation.PSCredential ('onepay', $Password)
     $LocalPath = get-childitem $LogPath
-    $SftpPath = '/Public/test/securitylog'
+    $SftpPath = '/Public/SecurityLog'
     $SftpIp = '192.168.0.77'
     Import-Module 'C:\Program Files\WindowsPowerShell\Modules\Posh-SSH'
     $ThisSession = New-SFTPSession -ComputerName $SftpIp -Credential $Credential -Port 2836 -AcceptKey
