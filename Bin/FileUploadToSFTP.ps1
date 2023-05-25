@@ -1,6 +1,10 @@
 $wifiList = @('JP_Hundsun_5G_R&D', 'JP_Hundsun_9F_Plus', 'JP_Hundsun_9F_Pro','JP_Hundsun_Guest')
 
-Get-Content C:\DeviceTracker\settings.txt | Foreach-Object{
+$scriptPathUploaderLink = $PSScriptRoot
+$parentPathUploaderLink = Split-Path -Parent -Path $scriptPathUploaderLink
+$theUploaderPath = Join-Path $parentPathUploaderLink 'settings.txt'
+
+Get-Content $theUploaderPath | Foreach-Object{
     $var = $_.Split('=')
     New-Variable -Name $var[0] -Value $var[1]
 }

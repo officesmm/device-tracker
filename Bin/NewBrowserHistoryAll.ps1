@@ -23,25 +23,38 @@ function BrowserHistory($GapDate)
     }
     $BrowserHistoryFilePath = $NewItemPath + "\BrowserHistory" + $YesterdayDateFileName + $ComputerName[0] + ".csv"
 
+    $SQLitePathZipFile = Join-Path $SQLitePath 'sqlite.zip'
+
+#    Check SQLite Path File not Exist to create one
+    if (-not (Test-Path $SQLitePath)) {
+        New-Item -ItemType Directory -Path $SQLitePath -Force
+        Write-Host "Folder path created: $SQLitePath"
+    } else {
+        Write-Host "Folder path already exists: $SQLitePath"
+    }
+
+    #    Error
     #Copy Database Sqlite to under C
-    if (-not(Test-Path -Path C:\sqlite.zip -PathType Leaf))
+    if (-not(Test-Path -Path $SQLitePathZipFile -PathType Leaf))
     {
         $theDatabasePath = Join-Path $parentPathLocal 'Database/sqlite.zip'
-        Copy-Item -Path $theDatabasePath -Destination 'C:\'
+        Copy-Item -Path $theDatabasePath -Destination $SQLitePath
     }
+
+    #    Error
     #DOWNLOAD SQLITE
-    if (-not(Test-Path -Path C:\sqlite.zip -PathType Leaf))
+    if (-not(Test-Path -Path $SQLitePathZipFile -PathType Leaf))
     {
-        Invoke-WebRequest -Uri "https://www.sqlite.org/2022/sqlite-tools-win32-x86-3380500.zip" -OutFile C:\sqlite.zip
+        Invoke-WebRequest -Uri "https://www.sqlite.org/2022/sqlite-tools-win32-x86-3380500.zip" -OutFile $SQLitePathZipFile
     }
 
     #Extract to SQLITE Folder
     if (-not(Test-Path -Path "C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe"))
     {
-        Expand-Archive C:\sqlite.zip -DestinationPath C:\SQLite3 -Force
+        Expand-Archive $SQLitePathZipFile -DestinationPath C:\SQLite3 -Force
     }
-
     #READ DATA FROM TABLE
+
     #Chrome Start here
     try
     {
@@ -79,7 +92,7 @@ function BrowserHistory($GapDate)
         }
         catch
         {
-            Write-Host "Index and length error";
+            Write-Host "Chrome Index and length error";
         }
     }
     #Chrome End here
@@ -121,7 +134,7 @@ function BrowserHistory($GapDate)
         }
         catch
         {
-            Write-Host "Index and length error";
+            Write-Host "Firefox Index and length error";
         }
 
     }
@@ -164,13 +177,12 @@ function BrowserHistory($GapDate)
         }
         catch
         {
-            Write-Host "Index and length error";
+            Write-Host "Edge Index and length error";
         }
     }
     #Edge End here
 
     $AllHistory | Export-Csv -Encoding UTF8 -Path $BrowserHistoryFilePath
-
 }
 #Last Run Action
 
