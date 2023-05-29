@@ -33,7 +33,6 @@ function BrowserHistory($GapDate)
         Write-Host "Folder path already exists: $SQLitePath"
     }
 
-    #    Error
     #Copy Database Sqlite to under C
     if (-not(Test-Path -Path $SQLitePathZipFile -PathType Leaf))
     {
@@ -41,7 +40,6 @@ function BrowserHistory($GapDate)
         Copy-Item -Path $theDatabasePath -Destination $SQLitePath
     }
 
-    #    Error
     #DOWNLOAD SQLITE
     if (-not(Test-Path -Path $SQLitePathZipFile -PathType Leaf))
     {
@@ -56,6 +54,36 @@ function BrowserHistory($GapDate)
     #READ DATA FROM TABLE
 
     #Chrome Start here
+
+    #Chrome Possible file
+    $ChromePossibleProfiles = @(
+    "Default",
+    "Profile 1",
+    "Profile 2",
+    "Profile 3",
+    "Profile 4",
+    "Profile 5",
+    "Profile 6",
+    "Profile 7",
+    "Profile 8",
+    "Profile 9",
+    "Profile 10"
+    )
+    $ExistingChromePossibleProfilesPaths = @()
+    foreach ($ChromePossibleProfile in $ChromePossibleProfiles)
+    {
+        $ChromeHistoryPath1 = Join-Path "C:\Users\" $UserName
+        $ChromeHistoryPath2 = Join-Path  $ChromeHistoryPath1 "\AppData\Local\Google\Chrome\User Data\"
+        $ChromeHistoryPath = Join-Path  $ChromeHistoryPath2 $ChromePossibleProfile
+        if (Test-Path $ChromeHistoryPath) {
+            $ExistingChromePossibleProfilesPaths += $ChromeHistoryPath
+        }
+    }
+    foreach ($CurrentUsingExistingchromePossibleProfilesPath in $ExistingChromePossibleProfilesPaths)
+    {
+        $ExistingChromePossibleProfilesPaths
+    }
+
     try
     {
         $DataDestinationPath = "C:\Users\" + $UserName + "\AppData\Local\Google\Chrome\User Data\Default\HistoryTemp.sqlite"
@@ -75,6 +103,7 @@ function BrowserHistory($GapDate)
     {
         write-host $_.Exception.Message
     }
+
     For ($i = 0; $i -lt $SQLiteArrayChrome.Length; $i++) {
         try
         {
@@ -136,7 +165,6 @@ function BrowserHistory($GapDate)
         {
             Write-Host "Firefox Index and length error";
         }
-
     }
     #Firefox End here
 
