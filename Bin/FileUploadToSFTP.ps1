@@ -1,4 +1,4 @@
-$wifiList = @('JP_Hundsun_5G_R&D', 'JP_Hundsun_9F_Plus', 'JP_Hundsun_9F_Pro','JP_Hundsun_Guest')
+$wifiList = @('JP_Hundsun_5G_R&D', 'JP_Hundsun_9F_Plus', 'JP_Hundsun_9F_Pro', 'JP_Hundsun_Guest','JP_Hundsun_5G_MGMT')
 
 $scriptPathUploaderLink = $PSScriptRoot
 $parentPathUploaderLink = Split-Path -Parent -Path $scriptPathUploaderLink

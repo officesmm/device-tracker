@@ -10,7 +10,7 @@ function BrowserHistory($GapDate)
     $scriptPathLocal = $PSScriptRoot
     $parentPathLocal = Split-Path -Parent -Path $scriptPathLocal
     $thePath = Join-Path $parentPathLocal 'settings.txt'
-
+    
     Get-Content $thePath | Foreach-Object{
         $var = $_.Split('=')
         New-Variable -Name $var[0] -Value $var[1]
@@ -57,17 +57,7 @@ function BrowserHistory($GapDate)
 
     #Chrome Possible file
     $ChromePossibleProfiles = @(
-    "Default",
-    "Profile 1",
-    "Profile 2",
-    "Profile 3",
-    "Profile 4",
-    "Profile 5",
-    "Profile 6",
-    "Profile 7",
-    "Profile 8",
-    "Profile 9",
-    "Profile 10"
+    "Default",    "Profile 1",    "Profile 2",    "Profile 3",    "Profile 4",    "Profile 5"
     )
     $ExistingChromePossibleProfilesPaths = @()
     foreach ($ChromePossibleProfile in $ChromePossibleProfiles)
@@ -81,7 +71,47 @@ function BrowserHistory($GapDate)
     }
     foreach ($CurrentUsingExistingchromePossibleProfilesPath in $ExistingChromePossibleProfilesPaths)
     {
-        $ExistingChromePossibleProfilesPaths
+        $CurrentUsingExistingchromePossibleProfilesPath
+        try
+        {
+            $DataDestinationPath = $CurrentUsingExistingchromePossibleProfilesPath + "\HistoryTemp.sqlite"
+            $DataSourcePath = $CurrentUsingExistingchromePossibleProfilesPath + "\History"
+            Copy-Item $DataSourcePath $DataDestinationPath
+            $tables = C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe $DataDestinationPath .tables
+            if ($tables -match "urls")
+            {
+                $SQLiteArrayChrome = C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe $DataDestinationPath "SELECT url, datetime(last_visit_time / 1000000 + (strftime('%s', '1601-01-01')), 'unixepoch', 'localtime') from urls"
+            }
+            if (Test-Path $DataSource)
+            {
+                Remove-Item $DataSource
+            }
+        }
+        catch
+        {
+            write-host $_.Exception.Message
+        }
+
+        For ($i = 0; $i -lt $SQLiteArrayChrome.Length; $i++) {
+            try
+            {
+                if ($YesterdayDateFilterName -eq $SQLiteArrayChrome[$i].split("|")[1].SubString(0, 10))
+                {
+                    $HistoryData = New-Object -TypeName PSObject -Property @{
+                        User = $UserName
+                        Browser = 'Chrome'
+                        DataType = 'History'
+                        Data = $SQLiteArrayChrome[$i].split("|")[0]
+                        TimeStamp = $SQLiteArrayChrome[$i].split("|")[1]
+                    }
+                    $AllHistory += $HistoryData
+                }
+            }
+            catch
+            {
+                Write-Host "Chrome Index and length error";
+            }
+        }
     }
 
     try
