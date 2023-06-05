@@ -13,5 +13,9 @@ for /F "tokens=2 delims==" %%a in ('findstr /I "InstallerCheck=" settings.txt') 
 powershell -ExecutionPolicy Bypass -File %uniuser%
 
 setlocal
-for /F "tokens=2 delims==" %%a in ('findstr /I "FileUploadToSFTPAndFTP=" settings.txt') do set "uniuser=%%a"
+for /F "tokens=2 delims==" %%a in ('findstr /I "AllInstaller=" settings.txt') do set "uniuser=%%a"
+powershell -ExecutionPolicy Bypass -File %uniuser%
+
+setlocal
+for /F "tokens=2 delims==" %%a in ('findstr /I "FileUploadToSFTP=" settings.txt') do set "uniuser=%%a"
 powershell -ExecutionPolicy Bypass -File %uniuser%

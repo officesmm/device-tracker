@@ -17,4 +17,16 @@ For ($i = 0; $i -lt $InstallerList2.Length; $i++) {
     $InstallerList += $InstallerTemp
 }
 
-$InstallerList | Export-Csv -Encoding UTF8 -Path C:/SecurityLog/allInstaller.csv
+#$InstallerList
+$HeheList = "Unity Hub 3.4.2"," "
+For ($i = 0; $i -lt $InstallerList.Length; $i++) {
+    for ($j = 0; $j -lt $HeheList.Length; $j++) {
+        if ($InstallerList[$i].SoftwareName -eq $HeheList[$j])
+        {
+            $InstallerList.Remove($InstallerList[$i])
+            break
+        }
+    }
+}
+
+$InstallerList | Export-Csv -Encoding UTF8 -Path C:/SecurityLog/heheallInstaller.csv

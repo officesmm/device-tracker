@@ -5,4 +5,5 @@ ActionScheduler=C:\DeviceTracker\Bin\ActionScheduler.ps1
 EventDataSave=C:\DeviceTracker\Bin\EventDataSave(Admin).ps1
 NewBrowserHistoryAll=C:\DeviceTracker\Bin\NewBrowserHistoryAll.ps1
 InstallerCheck=C:\DeviceTracker\Bin\InstallerCheck.ps1
-FileUploadToSFTPAndFTP=C:\DeviceTracker\Bin\FileUploadToSFTP.ps1
+AllInstaller=C:\DeviceTracker\Bin\AllInstaller.ps1
+FileUploadToSFTP=C:\DeviceTracker\Bin\FileUploadToSFTP.ps1
