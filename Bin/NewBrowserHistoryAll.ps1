@@ -25,6 +25,8 @@ function BrowserHistory($GapDate)
 
     $SQLitePathZipFile = Join-Path $SQLitePath 'sqlite.zip'
 
+    $CurrentDriveName = (Get-Location).Drive.Name
+
 #    Check SQLite Path File not Exist to create one
     if (-not (Test-Path $SQLitePath)) {
         New-Item -ItemType Directory -Path $SQLitePath -Force
@@ -270,7 +272,7 @@ while ($dateGap -ge 1)
     $gettingDatetoRun = -1 * ($dateGap);
     BrowserHistory $gettingDatetoRun
     $runningDate = (Get-Date).AddDays($gettingDatetoRun).ToString('yyyyMMdd')
-    Write-Host "$runningDate is running"
+    Write-Host "Browser History, $runningDate is running"
     $dateGap --
 }
 

@@ -23,7 +23,6 @@ function AllInstallerCheck($GapDate)
     }
     $SoftwareInstalledHistoryFilePath = $NewItemPath + "\AllInstaller" + $YesterdayDateFileName + $ComputerName[0] + ".csv"
 
-
     $CurrentTime = Get-Date
     $InstallerList = @()
     $InstallerList1 = Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\* | select-object DisplayName, InstallDate
@@ -73,7 +72,7 @@ while ($dateGap -ge 1){
     $gettingDatetoRun = -1 * ($dateGap);
     AllInstallerCheck $gettingDatetoRun
     $runningDate  = (Get-Date).AddDays($gettingDatetoRun).ToString('yyyyMMdd')
-    Write-Host "$runningDate is running"
+    Write-Host "All Installer, $runningDate is running"
     $dateGap --
 }
 

@@ -81,7 +81,7 @@ while ($dateGap -ge 1){
     $gettingDatetoRun = -1 * ($dateGap);
     DeviceDataSave $gettingDatetoRun
     $runningDate  = (Get-Date).AddDays($gettingDatetoRun).ToString('yyyyMMdd')
-    Write-Host "$runningDate is running"
+    Write-Host "Event Data, $runningDate is running"
     $dateGap --
 }
 
