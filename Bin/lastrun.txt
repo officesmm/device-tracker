@@ -1,4 +1,4 @@
-﻿BrowserHistory=null
-DeviceHistory=null
-InstallerHistory=null
-AllInstaller=null
+﻿BrowserHistory=20230605
+DeviceHistory=20230605
+InstallerHistory=20230605
+AllInstaller=20230605

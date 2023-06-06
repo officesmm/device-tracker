@@ -49,11 +49,9 @@ function BrowserHistory($GapDate)
     }
 
     #Extract to SQLITE Folder
-    $SQLiteInstallPath = $CurrentDriveName + ":\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe"
-    if (-not(Test-Path -Path $SQLiteInstallPath))
+    if (-not(Test-Path -Path "C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe"))
     {
-        $SQLiteInstallSQLite3ForcePath = $CurrentDriveName + ":\SQLite3"
-        Expand-Archive $SQLitePathZipFile -DestinationPath $SQLiteInstallSQLite3ForcePath -Force
+        Expand-Archive $SQLitePathZipFile -DestinationPath C:\SQLite3 -Force
     }
     #READ DATA FROM TABLE
 
@@ -66,8 +64,7 @@ function BrowserHistory($GapDate)
     $ExistingChromePossibleProfilesPaths = @()
     foreach ($ChromePossibleProfile in $ChromePossibleProfiles)
     {
-        $UserNameAndChromeHistoryPath0Intro = $CurrentDriveName + ":\Users\"
-        $ChromeHistoryPath1 = Join-Path $UserNameAndChromeHistoryPath0Intro $UserName
+        $ChromeHistoryPath1 = Join-Path "C:\Users\" $UserName
         $ChromeHistoryPath2 = Join-Path  $ChromeHistoryPath1 "\AppData\Local\Google\Chrome\User Data\"
         $ChromeHistoryPath = Join-Path  $ChromeHistoryPath2 $ChromePossibleProfile
         if (Test-Path $ChromeHistoryPath) {
@@ -82,10 +79,10 @@ function BrowserHistory($GapDate)
             $DataDestinationPath = $CurrentUsingExistingchromePossibleProfilesPath + "\HistoryTemp.sqlite"
             $DataSourcePath = $CurrentUsingExistingchromePossibleProfilesPath + "\History"
             Copy-Item $DataSourcePath $DataDestinationPath
-            $tables = sqlite3.exe $DataDestinationPath .tables
+            $tables = C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe $DataDestinationPath .tables
             if ($tables -match "urls")
             {
-                $SQLiteArrayChrome = sqlite3.exe $DataDestinationPath "SELECT url, datetime(last_visit_time / 1000000 + (strftime('%s', '1601-01-01')), 'unixepoch', 'localtime') from urls"
+                $SQLiteArrayChrome = C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe $DataDestinationPath "SELECT url, datetime(last_visit_time / 1000000 + (strftime('%s', '1601-01-01')), 'unixepoch', 'localtime') from urls"
             }
             if (Test-Path $DataSource)
             {
@@ -123,16 +120,16 @@ function BrowserHistory($GapDate)
     #Firefox Start here
     try
     {
-        $Path = $CurrentDriveName +":\Users\$UserName\AppData\Roaming\Mozilla\Firefox\Profiles\"
+        $Path = "C:\Users\$UserName\AppData\Roaming\Mozilla\Firefox\Profiles\"
         $Profiles = Get-ChildItem -Path "$Path\*.default-release*\" -ErrorAction SilentlyContinue
 
         ForEach ($item in $Profiles)
         {
             $DataSource = "$item\places.sqlite"
-            $tables = sqlite3.exe $DataSource .tables
+            $tables = C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe $DataSource .tables
             if ($tables -match "moz")
             {
-                $SQLiteArrayFirefox = sqlite3.exe $DataSource "SELECT url, datetime(last_visit_date / 1000000 + (strftime('%s', '1970-01-01')), 'unixepoch', 'localtime') from moz_places"
+                $SQLiteArrayFirefox = C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe $DataSource "SELECT url, datetime(last_visit_date / 1000000 + (strftime('%s', '1970-01-01')), 'unixepoch', 'localtime') from moz_places"
             }
         }
     }
@@ -165,13 +162,13 @@ function BrowserHistory($GapDate)
     #Edge Start here
     try
     {
-        $DataDestinationPath = $CurrentDriveName +":\Users\" + $UserName + "\AppData\Local\Microsoft\Edge\User Data\Default\HistoryTemp.sqlite"
-        $DataSourcePath = $CurrentDriveName + ":\Users\" + $UserName + "\AppData\Local\Microsoft\Edge\User Data\Default\History"
+        $DataDestinationPath = "C:\Users\" + $UserName + "\AppData\Local\Microsoft\Edge\User Data\Default\HistoryTemp.sqlite"
+        $DataSourcePath = "C:\Users\" + $UserName + "\AppData\Local\Microsoft\Edge\User Data\Default\History"
         Copy-Item $DataSourcePath $DataDestinationPath
-        $tables = sqlite3.exe $DataDestinationPath .tables
+        $tables = C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe $DataDestinationPath .tables
         if ($tables -match "urls")
         {
-            $SQLiteArrayEdge = sqlite3.exe $DataDestinationPath "SELECT url, datetime(last_visit_time / 1000000 + (strftime('%s', '1601-01-01')), 'unixepoch', 'localtime') from urls"
+            $SQLiteArrayEdge = C:\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe $DataDestinationPath "SELECT url, datetime(last_visit_time / 1000000 + (strftime('%s', '1601-01-01')), 'unixepoch', 'localtime') from urls"
         }
         if (Test-Path $DataSource)
         {
