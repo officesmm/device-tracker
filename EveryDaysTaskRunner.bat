@@ -1,4 +1,4 @@
-cd C:/DeviceTracker/
+cd C:\DeviceTracker\
 @echo off
 setlocal
 for /F "tokens=2 delims==" %%a in ('findstr /I "EventDataSave=" settings.txt') do set "uniuser=%%a"

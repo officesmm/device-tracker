@@ -15,7 +15,9 @@ function DeviceDataSave($GapDate){
         New-Variable -Name $var[0] -Value $var[1]
     }
 
-    $NewItemPath = $LogPath+$YesterdayDateFileName
+    $PreLogPath = Join-Path $parentPathLocal $LogPath
+    $NewItemPath = $PreLogPath + $YesterdayDateFileName
+#    $NewItemPath = $LogPath+$YesterdayDateFileName
     if (-Not (Test-Path -Path $NewItemPath)){
         New-Item -Path $NewItemPath -ItemType Directory
     }

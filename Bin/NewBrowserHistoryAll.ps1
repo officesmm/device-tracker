@@ -10,13 +10,14 @@ function BrowserHistory($GapDate)
     $scriptPathLocal = $PSScriptRoot
     $parentPathLocal = Split-Path -Parent -Path $scriptPathLocal
     $thePath = Join-Path $parentPathLocal 'settings.txt'
-    
+
     Get-Content $thePath | Foreach-Object{
         $var = $_.Split('=')
         New-Variable -Name $var[0] -Value $var[1]
     }
 
-    $NewItemPath = $LogPath + $YesterdayDateFileName
+    $PreLogPath = Join-Path $parentPathLocal $LogPath
+    $NewItemPath = $PreLogPath + $YesterdayDateFileName
     if (-Not(Test-Path -Path $NewItemPath))
     {
         New-Item -Path $NewItemPath -ItemType Directory
