@@ -19,7 +19,8 @@ if ($ContainsPrefix)
     $wifiName
     $Password = ConvertTo-SecureString 'onepay001' -AsPlainText -Force
     $Credential = New-Object System.Management.Automation.PSCredential ('onepay', $Password)
-    $LocalPath = get-childitem $LogPath
+    $PreLogPath = Join-Path $parentPathUploaderLink $LogPath
+    $LocalPath = get-childitem $PreLogPath
     $SftpPath = '/Public/SecurityLog'
     $SftpIp = '192.168.0.77'
     Import-Module 'C:\Program Files\WindowsPowerShell\Modules\Posh-SSH'
