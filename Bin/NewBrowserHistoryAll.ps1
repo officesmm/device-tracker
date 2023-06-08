@@ -24,37 +24,40 @@ function BrowserHistory($GapDate)
     }
     $BrowserHistoryFilePath = $NewItemPath + "\BrowserHistory" + $YesterdayDateFileName + $ComputerName[0] + ".csv"
 
-    $SQLitePathZipFile = Join-Path $SQLitePath 'sqlite.zip'
 
     $CurrentDriveName = (Get-Location).Drive.Name
+#    $SQLitePathZipFile = Join-Path $SQLitePath 'sqlite.zip'
+#    #Check SQLite Path File not Exist to create one
+#    if (-not (Test-Path $SQLitePath)) {
+#        New-Item -ItemType Directory -Path $SQLitePath -Force
+#        Write-Host "Folder path created: $SQLitePath"
+#    } else {
+#        Write-Host "Folder path already exists: $SQLitePath"
+#    }
+#
+#    #Copy Database Sqlite to under C
+#    if (-not(Test-Path -Path $SQLitePathZipFile -PathType Leaf))
+#    {
+#        $theDatabasePath = Join-Path $parentPathLocal Database/sqlite.zip
+#        Copy-Item -Path $theDatabasePath -Destination $SQLitePath
+#    }
+#
+#    #DOWNLOAD SQLITE
+#    if (-not(Test-Path -Path $SQLitePathZipFile -PathType Leaf))
+#    {
+#        Invoke-WebRequest -Uri "https://www.sqlite.org/2022/sqlite-tools-win32-x86-3380500.zip" -OutFile $SQLitePathZipFile
+#    }
 
-#    Check SQLite Path File not Exist to create one
-    if (-not (Test-Path $SQLitePath)) {
-        New-Item -ItemType Directory -Path $SQLitePath -Force
-        Write-Host "Folder path created: $SQLitePath"
-    } else {
-        Write-Host "Folder path already exists: $SQLitePath"
-    }
 
-    #Copy Database Sqlite to under C
-    if (-not(Test-Path -Path $SQLitePathZipFile -PathType Leaf))
-    {
-        $theDatabasePath = Join-Path $parentPathLocal 'Database/sqlite.zip'
-        Copy-Item -Path $theDatabasePath -Destination $SQLitePath
-    }
-
-    #DOWNLOAD SQLITE
-    if (-not(Test-Path -Path $SQLitePathZipFile -PathType Leaf))
-    {
-        Invoke-WebRequest -Uri "https://www.sqlite.org/2022/sqlite-tools-win32-x86-3380500.zip" -OutFile $SQLitePathZipFile
-    }
+    #To install SQLite File
+    $SQliteZipPath = Join-Path $parentPathLocal Database/sqlite.zip
 
     #Extract to SQLITE Folder
     $SQLiteInstallPath = $CurrentDriveName + ":\SQLite3\sqlite-tools-win32-x86-3380500\sqlite3.exe"
     if (-not(Test-Path -Path $SQLiteInstallPath))
     {
         $SQLiteInstallSQLite3ForcePath = $CurrentDriveName + ":\SQLite3"
-        Expand-Archive $SQLitePathZipFile -DestinationPath $SQLiteInstallSQLite3ForcePath -Force
+        Expand-Archive $SQliteZipPath -DestinationPath $SQLiteInstallSQLite3ForcePath -Force
     }
     #READ DATA FROM TABLE
 

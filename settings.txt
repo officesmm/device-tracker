@@ -1,5 +1,4 @@
 LogPath=SecurityLog\
-SQLitePath=C:\DeviceTracker\SQLiteZipFile\
 EnableOperation=Bin\EnableOperation(Admin).ps1
 ActionScheduler=Bin\ActionScheduler.ps1
 EventDataSave=Bin\EventDataSave(Admin).ps1
