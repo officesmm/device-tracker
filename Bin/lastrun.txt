@@ -1,4 +1,4 @@
-﻿BrowserHistory=null
+BrowserHistory=null
 DeviceHistory=null
 InstallerHistory=null
 AllInstaller=null

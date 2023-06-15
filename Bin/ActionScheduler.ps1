@@ -15,3 +15,14 @@ $file = Join-Path $parentPathLocal "EveryDaysTaskRunner.bat"
 $content = Get-Content $file
 $content[0] = "cd "+ $parentPathLocal +"\"
 $content | Set-Content $file
+
+#add path to the sqlite3 extension
+$newPath = "C:\SQLite3\sqlite-tools-win32-x86-3380500"
+$currentPath = [Environment]::GetEnvironmentVariable("PATH", [EnvironmentVariableTarget]::Machine)
+if ($currentPath -split ';' -contains $newPath) {
+    Write-Host "SQLite Env Path is already present."
+} else {
+    $updatedPath = "$currentPath;$newPath"
+    [Environment]::SetEnvironmentVariable("PATH", $updatedPath, [EnvironmentVariableTarget]::Machine)
+    Write-Host "SQLite Env Path is added to the Environment variable."
+}
