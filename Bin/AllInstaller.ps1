@@ -1,5 +1,5 @@
-function AllInstallerCheck($GapDate)
-{
+function AllInstallerCheck($GapDate) {
+
     $softwarePrefixList = @('Microsoft')
     $ContainsPrefix = $softwarePrefixList | Where-Object { $wifiName -like "$_*" }
 
@@ -19,8 +19,8 @@ function AllInstallerCheck($GapDate)
 
     $PreLogPath = Join-Path $parentPathLocal $LogPath
     $NewItemPath = $PreLogPath + $YesterdayDateFileName
-#    $NewItemPath = $LogPath + $YesterdayDateFileName
-    if (-Not(Test-Path -Path $NewItemPath)){
+    #    $NewItemPath = $LogPath + $YesterdayDateFileName
+    if (-Not(Test-Path -Path $NewItemPath)) {
         New-Item -Path $NewItemPath -ItemType Directory
     }
     $SoftwareInstalledHistoryFilePath = $NewItemPath + "\AllInstaller" + $YesterdayDateFileName + $ComputerName[0] + ".csv"
@@ -30,7 +30,7 @@ function AllInstallerCheck($GapDate)
     $InstallerList1 = Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\* | select-object DisplayName, InstallDate
     For ($i = 0; $i -lt $InstallerList1.Length; $i++) {
         $ContainsPrefix = $softwarePrefixList | Where-Object { $InstallerList1[$i].DisplayName -like "$_*" }
-        if(-Not $ContainsPrefix){
+        if (-Not$ContainsPrefix) {
             $InstallerTemp = New-Object -TypeName PSObject -Property @{
                 SoftwareName = $InstallerList1[$i].DisplayName
                 RunTime = $CurrentTime
@@ -39,10 +39,10 @@ function AllInstallerCheck($GapDate)
             $InstallerList += $InstallerTemp
         }
     }
-    $InstallerList2  = AppxPackage
+    $InstallerList2 = AppxPackage
     For ($i = 0; $i -lt $InstallerList2.Length; $i++) {
         $ContainsPrefix = $softwarePrefixList | Where-Object { $InstallerList2[$i].Name -like "$_*" }
-        if(-Not $ContainsPrefix){
+        if (-Not$ContainsPrefix) {
             $InstallerTemp = New-Object -TypeName PSObject -Property @{
                 SoftwareName = $InstallerList2[$i].Name
                 RunTime = $CurrentTime
@@ -59,21 +59,22 @@ $YesterdayDateFileName = (Get-Date).AddDays(-1).ToString('yyyyMMdd')
 $VariableList = Get-Content -Raw $file | ConvertFrom-StringData
 $HistoryVar = $VariableList.AllInstaller
 
-if($HistoryVar -match "^[\d\.]+$"){
+if ($HistoryVar -match "^[\d\.]+$") {
     $Today = Get-Date
     $PreviousDate = [datetime]::ParseExact($HistoryVar, 'yyyyMMdd', $null)
     $Gap = $Today - $PreviousDate
     $dateGap = $Gap.Days - 1
-    if($dateGap -gt 7){
+    if ($dateGap -gt 7) {
         $dateGap = 7
     }
-}else{
+}
+else {
     $dateGap = 7
 }
-while ($dateGap -ge 1){
+while ($dateGap -ge 1) {
     $gettingDatetoRun = -1 * ($dateGap);
     AllInstallerCheck $gettingDatetoRun
-    $runningDate  = (Get-Date).AddDays($gettingDatetoRun).ToString('yyyyMMdd')
+    $runningDate = (Get-Date).AddDays($gettingDatetoRun).ToString('yyyyMMdd')
     Write-Host "All Installer, $runningDate is running"
     $dateGap --
 }
@@ -81,7 +82,8 @@ while ($dateGap -ge 1){
 (Get-Content $file -Encoding utf8) | ForEach-Object {
     if ($_ -match "^AllInstaller=") {
         "AllInstaller=$YesterdayDateFileName"
-    } else {
+    }
+    else {
         $_
     }
 } | Set-Content $file -Encoding utf8
