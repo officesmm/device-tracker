@@ -1,3 +1,4 @@
+C:
 cd C:\DeviceTracker\
 @echo off
 setlocal

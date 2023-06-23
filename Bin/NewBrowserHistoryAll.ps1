@@ -24,7 +24,10 @@ function BrowserHistory($GapDate)
     }
     $BrowserHistoryFilePath = $NewItemPath + "\BrowserHistory" + $YesterdayDateFileName + $ComputerName[0] + ".csv"
 
-    $CurrentDriveName = (Get-Location).Drive.Name
+    Write-Host "Browser history path $BrowserHistoryFilePath"
+
+#    $CurrentDriveName = (Get-Location).Drive.Name
+    $CurrentDriveName = (Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Root -like 'C:\*' }).Name
     #To install SQLite File
     $SQliteZipPath = Join-Path $parentPathLocal Database/sqlite.zip
 
@@ -34,6 +37,10 @@ function BrowserHistory($GapDate)
     {
         $SQLiteInstallSQLite3ForcePath = $CurrentDriveName + ":\SQLite3"
         Expand-Archive $SQliteZipPath -DestinationPath $SQLiteInstallSQLite3ForcePath -Force
+        Write-Host "Installing SQLite in this Path : $SQLiteInstallSQLite3ForcePath";
+    }
+    else {
+        Write-Host "The SQLit file is exist in this Path : $SQLiteInstallPath"
     }
     #READ DATA FROM TABLE
 
@@ -43,6 +50,7 @@ function BrowserHistory($GapDate)
     "Default",    "Profile 1",    "Profile 2",    "Profile 3",    "Profile 4",    "Profile 5"
     )
     $ExistingChromePossibleProfilesPaths = @()
+
     foreach ($ChromePossibleProfile in $ChromePossibleProfiles)
     {
         $UserNameAndChromeHistoryPath0Intro = $CurrentDriveName + ":\Users\"
@@ -53,6 +61,7 @@ function BrowserHistory($GapDate)
             $ExistingChromePossibleProfilesPaths += $ChromeHistoryPath
         }
     }
+
     foreach ($CurrentUsingExistingchromePossibleProfilesPath in $ExistingChromePossibleProfilesPaths)
     {
         $CurrentUsingExistingchromePossibleProfilesPath
@@ -62,13 +71,14 @@ function BrowserHistory($GapDate)
             $DataSourcePath = $CurrentUsingExistingchromePossibleProfilesPath + "\History"
             Copy-Item $DataSourcePath $DataDestinationPath
             $tables = sqlite3.exe $DataDestinationPath .tables
+
             if ($tables -match "urls")
             {
                 $SQLiteArrayChrome = sqlite3.exe $DataDestinationPath "SELECT url, datetime(last_visit_time / 1000000 + (strftime('%s', '1601-01-01')), 'unixepoch', 'localtime') from urls"
             }
-            if (Test-Path $DataSource)
+            if (Test-Path $DataDestinationPath)
             {
-                Remove-Item $DataSource
+                Remove-Item $DataDestinationPath
             }
         }
         catch
@@ -99,6 +109,7 @@ function BrowserHistory($GapDate)
     }
     #Chrome End here
 
+    Write-Host "after chrome before firefox"
     #Firefox Start here
     try
     {
@@ -182,7 +193,7 @@ function BrowserHistory($GapDate)
         }
     }
     #Edge End here
-
+    Write-Host "last time browser path $BrowserHistoryFilePath"
     $AllHistory | Export-Csv -Encoding UTF8 -Path $BrowserHistoryFilePath
 }
 #Last Run Action

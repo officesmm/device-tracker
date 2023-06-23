@@ -13,7 +13,8 @@ $task | Set-ScheduledTask
 #editing EveryDaysTaskRunner Bat
 $file = Join-Path $parentPathLocal "EveryDaysTaskRunner.bat"
 $content = Get-Content $file
-$content[0] = "cd "+ $parentPathLocal +"\"
+$content[0] = $parentPathLocal[0] + ":"
+$content[1] = "cd "+ $parentPathLocal +"\"
 $content | Set-Content $file
 
 #add path to the sqlite3 extension
